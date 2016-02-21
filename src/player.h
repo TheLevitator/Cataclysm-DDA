@@ -143,7 +143,9 @@ class player : public Character, public JsonSerializer, public JsonDeserializer
         player &operator=(player &&) = default;
 
         // newcharacter.cpp
-        int create(character_type type, std::string tempname = "");
+        bool create(character_type type, std::string tempname = "");
+        void randomize( bool random_scenario, int &points );
+        bool load_template( const std::string &template_name );
         /** Calls Character::normalize()
          *  normalizes HP and bodytemperature
          */
@@ -767,6 +769,10 @@ class player : public Character, public JsonSerializer, public JsonDeserializer
          * @return cost in moves ranging from 0 to MAX_HANDLING_COST
          */
         int item_handling_cost( const item& it, bool effects = true, int factor = VOLUME_MOVE_COST) const;
+
+        /** Calculate (but do not deduct) the number of moves required when reloading an item */
+        int item_reload_cost( const item& it, const item& ammo ) const;
+
         /** Wear item; returns false on fail. If interactive is false, don't alert the player or drain moves on completion. */
         bool wear(int pos, bool interactive = true);
         /** Wear item; returns false on fail. If interactive is false, don't alert the player or drain moves on completion. */
